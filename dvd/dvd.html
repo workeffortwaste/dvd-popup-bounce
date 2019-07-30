@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DVD Video</title>
+</head>
+<style>
+    body {
+        overflow: hidden;
+        background-color: black;
+    }
+
+    #dvd {
+        -webkit-mask-size: 100%;
+        -webkit-mask-image: url(logo.svg);
+        mask-image: url(logo.svg);
+        position: absolute;
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 179px;
+    }
+
+    #dvd svg {
+        width: 100%;
+    }
+</style>
+<body>
+<div id="dvd"></div>
+<script>
+    let screenSize = {
+        height: screen.availHeight,
+        width: screen.availWidth
+    };
+    let windowSize = {
+        height: window.outerHeight,
+        width: window.outerWidth
+    };
+    let dvd = {
+        x: 600,
+        y: 200,
+        xspeed: 5,
+        yspeed: 5
+    };
+
+    function generateRandomInteger(min, max) {
+        return Math.floor(min + Math.random() * (max + 1 - min))
+    }
+
+
+    function randomColour() {
+        document.getElementById('dvd').style.backgroundColor = 'rgb(' + generateRandomInteger(100, 255) + ',' + generateRandomInteger(100, 255) + ',' + generateRandomInteger(100, 255) + ')';
+    }
+
+    randomColour();
+
+    function onTimerTick() {
+        dvd.x += dvd.xspeed;
+        dvd.y += dvd.yspeed;
+
+        if (dvd.x + windowSize.width >= screenSize.width || dvd.x <= 0) {
+            dvd.xspeed *= -1;
+            randomColour();
+        }
+
+        if (dvd.y + windowSize.height >= screenSize.height || dvd.y <= 0) {
+            dvd.yspeed *= -1;
+            randomColour();
+        }
+        window.moveTo(dvd.x, dvd.y);
+    }
+
+    setInterval(onTimerTick, 16); // Lazy 60fps
+</script>
+</body>
+</html>
